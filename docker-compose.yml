@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket for container execution
+      - .:/app
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - MONGODB_URL=${MONGODB_URL}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DEBUG=true
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - sandbox-network
+
+networks:
+  sandbox-network:
+    driver: bridge
